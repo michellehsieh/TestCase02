@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TestCase02.Models;
+using TestCase02.Models.ModelViews;
 
 namespace TestCase02.Controllers
 {
     public class BankController : Controller
     {
         客戶資料Entities db = new 客戶資料Entities();
+        客戶資料MV mv = new 客戶資料MV();
 
         // GET: Bank
         public ActionResult Index(string 搜尋條件 = "")
@@ -25,6 +27,7 @@ namespace TestCase02.Controllers
 
         public ActionResult Create()
         {
+            ViewData["CustomerId"] = mv.getCustomerId();
             return View();
         }
 
@@ -43,6 +46,7 @@ namespace TestCase02.Controllers
 
         public ActionResult Edit(int id)
         {
+            ViewData["CustomerId"] = mv.getCustomerId();
             var item = db.客戶銀行資訊.Find(id);
             return View(item);
         }
@@ -68,6 +72,7 @@ namespace TestCase02.Controllers
 
         public ActionResult Details(int id)
         {
+            ViewData["CustomerId"] = mv.getCustomerId();
             var item = db.客戶銀行資訊.Find(id);
             return View(item);
         }
