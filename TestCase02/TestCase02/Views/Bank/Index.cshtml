@@ -18,11 +18,12 @@
             <td>
                 @using (Html.BeginForm("Index", "Bank"))
                 {
-                      @Html.Label("依銀行名稱查詢：")
-                      @Html.TextBox("搜尋條件", null)
-                      < input type = "submit" value = "搜尋" class="btn btn-default" />
-                 }
+                    @Html.Label("依銀行名稱查詢：")
+                    @Html.TextBox("搜尋條件", null)
+                    <input type = "submit" value = "搜尋" class="btn btn-default" />
+                }
             </td>
+
         </tr>
     </table>
 </p>
