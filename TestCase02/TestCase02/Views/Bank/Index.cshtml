@@ -9,32 +9,10 @@
 <p>
     @Html.ActionLink("新增", "Create")
 </p>
-
-<p></p>
-
-<p>
-    <table class="table">
-        <tr>
-            <td>
-                @using (Html.BeginForm("Index", "Bank"))
-                {
-                    @Html.Label("依銀行名稱查詢：")
-                    @Html.TextBox("搜尋條件", null)
-                    <input type="submit" value="搜尋" class="btn btn-default" />
-                }                
-            </td>
-        </tr>
-    </table>
-</p>
-
-<p></p>
 <table class="table">
     <tr>
-        @*<th>
-            @Html.DisplayNameFor(model => model.客戶Id)
-        </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.客戶名稱)
+            @Html.DisplayNameFor(model => model.客戶Id)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.銀行名稱)
@@ -56,11 +34,8 @@
 
 @foreach (var item in Model) {
     <tr>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.客戶Id)
-        </td>*@
         <td>
-            @Html.DisplayFor(modelItem => item.客戶名稱)
+            @Html.DisplayFor(modelItem => item.客戶Id)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.銀行名稱)
