@@ -12,11 +12,15 @@ namespace TestCase02.Controllers
         客戶資料Entities db = new 客戶資料Entities();
 
         // GET: Bank
-        public ActionResult Index()
+        public ActionResult Index(string 搜尋條件 = "")
         {
             var bank = db.客戶銀行資訊.AsQueryable();
+            var data = bank;
 
-            return View(bank.ToList());
+            if (搜尋條件 != "") {
+                data = bank.Where(p => p.銀行名稱.Contains(搜尋條件));
+            }
+            return View(data.ToList());             
         }
 
         public ActionResult Create()
