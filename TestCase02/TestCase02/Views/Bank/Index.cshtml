@@ -6,10 +6,6 @@
 
 <h2>客戶銀行資訊</h2>
 
-<p>
-    @Html.ActionLink("新增", "Create")
-</p>
-
  <p></p>
  
  <p>
@@ -19,8 +15,7 @@
                 @using (Html.BeginForm("Index", "Bank"))
                 {
                     @Html.Label("依銀行名稱查詢：")
-                    @Html.TextBox("搜尋條件", null)
-                    <input type = "submit" value = "搜尋" class="btn btn-default" />
+                    @Html.TextBox("搜尋條件", null)                    
                 }
             </td>
 
@@ -29,6 +24,10 @@
 </p>
  
  <p></p>
+
+<p>
+    @Html.ActionLink("新增", "Create")
+</p>
 <table class="table">
     <tr>
         <th>

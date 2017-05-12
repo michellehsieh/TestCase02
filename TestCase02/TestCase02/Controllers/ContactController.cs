@@ -22,8 +22,7 @@ namespace TestCase02.Controllers
 
             if (搜尋條件 != "")
             {
-                data = contact
-                    .Where(p => p.是否已刪除 == false && p.姓名.Contains(搜尋條件));
+                data = contact.Where(p => p.姓名.Contains(搜尋條件));
             }
             return View(data.ToList());
         }

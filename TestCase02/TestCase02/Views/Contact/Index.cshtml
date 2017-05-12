@@ -6,9 +6,7 @@
 
 <h2>客戶聯絡人</h2>
 
-<p>
-    @Html.ActionLink("新增", "Create")
-</p>
+
 
 <p></p>
 
@@ -19,8 +17,7 @@
                 @using (Html.BeginForm("Index", "Contact"))
                 {
                     @Html.Label("依姓名查詢：")
-                    @Html.TextBox("搜尋條件", null)
-                    <input type="submit" value="搜尋" class="btn btn-default" />
+                    @Html.TextBox("搜尋條件", null)                    
                 }
             </td>
 
@@ -29,7 +26,9 @@
 </p>
 
 <p></p>
-
+<p>
+    @Html.ActionLink("新增", "Create")
+</p>
 <table class="table">
     <tr>
         @*<th>

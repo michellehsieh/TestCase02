@@ -5,16 +5,17 @@ OK * 請使用 "客戶資料" 這個資料庫做開發 (如附件檔案)
 OK * 請實作出「客戶資料管理」、「客戶聯絡人管理」與「客戶銀行帳戶管理」等簡易 CRUD 功能 (盡量做各種功能出來)
 OK * 在列表頁要實作「搜尋」功能
 OK * 實作一個清單頁面，顯示欄位有「客戶名稱、聯絡人數量、銀行帳戶數量」共三個欄位，此功能要在資料庫中建立一個檢視表，並且匯入 EDMX。
-	CREATE VIEW [dbo].[客戶資料統計表]
-	AS SELECT [dbo].[客戶資料].[ID], [dbo].[客戶資料].[客戶名稱], 
-				COUNT([dbo].[客戶聯絡人].[ID]) AS 聯絡人數量, 
-				COUNT([dbo].[客戶銀行資訊].[ID]) AS 帳戶數量
-         FROM [dbo].[客戶資料] LEFT JOIN [dbo].[客戶聯絡人] 
-					       ON [dbo].[客戶資料].[ID] = [dbo].[客戶聯絡人].[客戶ID]
-				    LEFT JOIN [dbo].[客戶銀行資訊]
-					       ON [dbo].[客戶資料].[ID] = [dbo].[客戶銀行資訊].[客戶ID]
-	    WHERE [dbo].[客戶資料].[是否已刪除] = 0
-     GROUP BY [dbo].[客戶資料].[ID], [dbo].[客戶資料].[客戶名稱]
+	 CREATE VIEW [dbo].[客戶資料統計表]
+		AS SELECT [dbo].[客戶資料].[Id], 
+				  [dbo].[客戶資料].[客戶名稱], 
+				  (SELECT COUNT(*) FROM [dbo].[客戶聯絡人] 
+					 WHERE [dbo].[客戶聯絡人].[客戶Id] = [dbo].[客戶資料].[ID] 
+					   and [dbo].[客戶聯絡人].是否已刪除 = 0 ) AS 聯絡人數量,
+				  (SELECT COUNT(*) FROM [dbo].[客戶銀行資訊] 
+				     WHERE [dbo].[客戶銀行資訊].[客戶Id] = [dbo].[客戶資料].[ID] 
+					   and [dbo].[客戶銀行資訊].是否已刪除 = 0 ) AS 帳戶數量
+			 FROM [dbo].[客戶資料]
+			WHERE [dbo].[客戶資料].[是否已刪除] = 0
 
 OK * 主選單要有連結可以直接連到三個主要功能的列表頁。
 OK * 對於 Create 與 Edit 表單要套用欄位驗證 (必填、Email格式、欄位長度限制等驗證)

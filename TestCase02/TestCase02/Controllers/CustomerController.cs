@@ -20,7 +20,7 @@ namespace TestCase02.Controllers
 
             if (搜尋條件 != "")
             {
-                data = customer.Where(p => p.是否已刪除 == false && p.客戶名稱.Contains(搜尋條件));
+                data = customer.Where(p => p.客戶名稱.Contains(搜尋條件));
             }
             return View(data.ToList());            
         }

@@ -21,7 +21,7 @@ namespace TestCase02.Controllers
             var data = bank.Where(p => p.是否已刪除 == false);
 
             if (搜尋條件 != "") {
-                data = bank.Where(p => p.是否已刪除 == false && p.銀行名稱.Contains(搜尋條件));
+                data = bank.Where(p => p.銀行名稱.Contains(搜尋條件));
             }
             return View(data.ToList());             
         }
