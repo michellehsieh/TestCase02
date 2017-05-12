@@ -14,11 +14,16 @@ namespace TestCase02.Controllers
         客戶資料MV mv = new 客戶資料MV();
 
         // GET: Contact
-        public ActionResult Index()
+        public ActionResult Index(string 搜尋條件 = "")
         {
-            var contact = db.客戶聯絡人.AsQueryable();
+            var contact = db.客戶聯絡人.AsQueryable();                             
+            var data = contact;
 
-            return View(contact.ToList());
+            if (搜尋條件 != "")
+            {
+                data = contact.Where(p => p.姓名.Contains(搜尋條件));
+            }
+            return View(data.ToList());           
         }
 
         public ActionResult Create()

@@ -15,15 +15,15 @@ namespace TestCase02.Models
         public int Id { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
-        [Required]
+        [Required(ErrorMessage = "請輸入客戶名稱！")]
         public string 客戶名稱 { get; set; }
         
         [StringLength(8, ErrorMessage="欄位長度不得大於 8 個字元")]
-        [Required]
+        [Required(ErrorMessage = "請輸入統一編號！")]
         public string 統一編號 { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
-        [Required]
+        [Required(ErrorMessage = "請輸入電話！")]
         public string 電話 { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
@@ -33,6 +33,7 @@ namespace TestCase02.Models
         public string 地址 { get; set; }
         
         [StringLength(250, ErrorMessage="欄位長度不得大於 250 個字元")]
+        [RegularExpression("(.+)@(.+)", ErrorMessage = "Email格式錯誤")]
         public string Email { get; set; }
     
         public virtual ICollection<客戶銀行資訊> 客戶銀行資訊 { get; set; }

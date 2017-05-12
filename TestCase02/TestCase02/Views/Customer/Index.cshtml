@@ -9,6 +9,27 @@
 <p>
     @Html.ActionLink("新增", "Create")
 </p>
+
+<p></p>
+
+<p>
+    <table class="table">
+        <tr>
+            <td>
+                @using (Html.BeginForm("Index", "Customer"))
+                {
+                    @Html.Label("依客戶名稱查詢：")
+                    @Html.TextBox("搜尋條件", null)
+                    <input type="submit" value="搜尋" class="btn btn-default" />
+                }
+            </td>
+
+        </tr>
+    </table>
+</p>
+
+<p></p>
+
 <table class="table">
     <tr>
         <th>
