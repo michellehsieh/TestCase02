@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,10 +18,10 @@ namespace TestCase02.Controllers
         public ActionResult Index(string 搜尋條件 = "")
         {
             var bank = db.客戶銀行資訊.AsQueryable();
-            var data = bank;
+            var data = bank.Where(p => p.是否已刪除 == false);
 
             if (搜尋條件 != "") {
-                data = bank.Where(p => p.銀行名稱.Contains(搜尋條件));
+                data = bank.Where(p => p.是否已刪除 == false && p.銀行名稱.Contains(搜尋條件));
             }
             return View(data.ToList());             
         }
@@ -81,8 +82,15 @@ namespace TestCase02.Controllers
         {
             var bank = db.客戶銀行資訊.Find(id);
 
-            db.客戶銀行資訊.Remove(bank);
-            db.SaveChanges();
+            bank.是否已刪除 = true;
+            //db.客戶銀行資訊.Remove(bank);
+
+            try {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex) {
+                throw ex;
+            }
 
             return RedirectToAction("Index");
         }

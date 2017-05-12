@@ -232,6 +232,7 @@
     <Compile Include="Models\sysdiagrams.Partial.cs">
       <DependentUpon>EFGeneratePartialClass.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ValidationAttributes\CheckAttribute.cs" />
     <Compile Include="Models\客戶聯絡人.cs">
       <DependentUpon>客戶資料.tt</DependentUpon>
     </Compile>
@@ -259,23 +260,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>客戶資料.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\客戶資料統計表.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>客戶資料統計表.Context.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\客戶資料統計表.cs">
-      <DependentUpon>客戶資料統計表.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\客戶資料統計表.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>客戶資料統計表.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\客戶資料統計表1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>客戶資料統計表.tt</DependentUpon>
+      <DependentUpon>客戶資料.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\客戶銀行資訊.cs">
       <DependentUpon>客戶資料.tt</DependentUpon>
@@ -307,16 +293,6 @@
       <DependentUpon>客戶資料.edmx</DependentUpon>
       <LastGenOutput>客戶資料1.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\客戶資料統計表.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>客戶資料統計表.edmx</DependentUpon>
-      <LastGenOutput>客戶資料統計表.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\客戶資料統計表.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>客戶資料統計表.edmx</DependentUpon>
-      <LastGenOutput>客戶資料統計表1.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -328,13 +304,6 @@
     </EntityDeploy>
     <Content Include="Models\客戶資料.edmx.diagram">
       <DependentUpon>客戶資料.edmx</DependentUpon>
-    </Content>
-    <EntityDeploy Include="Models\客戶資料統計表.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>客戶資料統計表.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\客戶資料統計表.edmx.diagram">
-      <DependentUpon>客戶資料統計表.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

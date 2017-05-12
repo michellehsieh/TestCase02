@@ -11,7 +11,6 @@ namespace TestCase02.Models
     
     public partial class 客戶資料MetaData
     {
-        [Required]
         public int Id { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
@@ -35,7 +34,9 @@ namespace TestCase02.Models
         [StringLength(250, ErrorMessage="欄位長度不得大於 250 個字元")]
         [RegularExpression("(.+)@(.+)", ErrorMessage = "Email格式錯誤")]
         public string Email { get; set; }
-    
+
+        public bool 是否已刪除 { get; set; }
+
         public virtual ICollection<客戶銀行資訊> 客戶銀行資訊 { get; set; }
         public virtual ICollection<客戶聯絡人> 客戶聯絡人 { get; set; }
     }

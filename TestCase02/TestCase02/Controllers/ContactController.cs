@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using TestCase02.Models;
 using TestCase02.Models.ModelViews;
+using System.Data.Entity.Validation;
 
 namespace TestCase02.Controllers
 {
@@ -16,18 +17,19 @@ namespace TestCase02.Controllers
         // GET: Contact
         public ActionResult Index(string 搜尋條件 = "")
         {
-            var contact = db.客戶聯絡人.AsQueryable();                             
-            var data = contact;
+            var contact = db.客戶聯絡人.AsQueryable();
+            var data = contact.Where(p => p.是否已刪除 == false);
 
             if (搜尋條件 != "")
             {
-                data = contact.Where(p => p.姓名.Contains(搜尋條件));
+                data = contact
+                    .Where(p => p.是否已刪除 == false && p.姓名.Contains(搜尋條件));
             }
-            return View(data.ToList());           
+            return View(data.ToList());
         }
 
         public ActionResult Create()
-        {            
+        {
             ViewData["CustomerId"] = mv.getCustomerId();
             return View();
         }
@@ -35,7 +37,9 @@ namespace TestCase02.Controllers
         [HttpPost]
         public ActionResult Create(客戶聯絡人 contact)
         {
-            if (ModelState.IsValid) {
+            ViewData["CustomerId"] = mv.getCustomerId();
+            if (ModelState.IsValid)
+            {
                 db.客戶聯絡人.Add(contact);
                 db.SaveChanges();
 
@@ -55,6 +59,7 @@ namespace TestCase02.Controllers
         [HttpPost]
         public ActionResult Edit(int id, 客戶聯絡人 contact)
         {
+            ViewData["CustomerId"] = mv.getCustomerId();
             if (ModelState.IsValid)
             {
                 var item = db.客戶聯絡人.Find(id);
@@ -65,7 +70,7 @@ namespace TestCase02.Controllers
                 item.手機 = contact.手機;
                 item.電話 = contact.電話;
                 db.SaveChanges();
-                
+
                 return RedirectToAction("Index");
             }
             return View(contact);
@@ -81,8 +86,15 @@ namespace TestCase02.Controllers
         {
             var contact = db.客戶聯絡人.Find(id);
 
-            db.客戶聯絡人.Remove(contact);
-            db.SaveChanges();
+            contact.是否已刪除 = true;
+            //db.客戶聯絡人.Remove(contact);
+
+            try {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex) {
+                throw ex;
+            }
 
             return RedirectToAction("Index");
         }

@@ -12,7 +12,7 @@ namespace TestCase02.Controllers
         // GET: Statistics
         public ActionResult Index()
         {
-            客戶資料Entities1 db = new 客戶資料Entities1();
+            客戶資料Entities db = new 客戶資料Entities();
 
             var data = db.客戶資料統計表.AsQueryable();
 
