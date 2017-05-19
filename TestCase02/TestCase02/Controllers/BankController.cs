@@ -5,30 +5,24 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TestCase02.Models;
-using TestCase02.Models.ModelViews;
 
 namespace TestCase02.Controllers
 {
     public class BankController : Controller
     {
-        客戶資料Entities db = new 客戶資料Entities();
-        客戶資料MV mv = new 客戶資料MV();
+        客戶銀行資訊Repository repo = new 客戶銀行資訊Repository();
+        客戶資料Repository repo_customer = new 客戶資料Repository();
 
         // GET: Bank
         public ActionResult Index(string 搜尋條件 = "")
         {
-            var bank = db.客戶銀行資訊.AsQueryable();
-            var data = bank.Where(p => p.是否已刪除 == false);
-
-            if (搜尋條件 != "") {
-                data = bank.Where(p => p.銀行名稱.Contains(搜尋條件));
-            }
-            return View(data.ToList());             
+            var bank = repo.依銀行名稱搜尋(搜尋條件);            
+            return View(bank);             
         }
 
         public ActionResult Create()
         {
-            ViewData["CustomerId"] = mv.getCustomerId();
+            ViewData["CustomerId"] = repo_customer.getCustomerId();
             return View();
         }
 
@@ -36,8 +30,8 @@ namespace TestCase02.Controllers
         public ActionResult Create(客戶銀行資訊 bank)
         {
             if (ModelState.IsValid) {
-                db.客戶銀行資訊.Add(bank);
-                db.SaveChanges();
+                repo.Add(bank);
+                repo.UnitOfWork.Commit();
 
                 return RedirectToAction("Index");
             }
@@ -47,51 +41,40 @@ namespace TestCase02.Controllers
 
         public ActionResult Edit(int id)
         {
-            ViewData["CustomerId"] = mv.getCustomerId();
-            var item = db.客戶銀行資訊.Find(id);
+            ViewData["CustomerId"] = repo_customer.getCustomerId();
+            var item = repo.依銀行Id搜尋(id);
             return View(item);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, 客戶銀行資訊 bank)
-        {
-            if (ModelState.IsValid)
-            {
-                var item = db.客戶銀行資訊.Find(id);
-                item.客戶Id = bank.客戶Id;
-                item.銀行名稱 = bank.銀行名稱;
-                item.銀行代碼 = bank.銀行代碼;
-                item.分行代碼 = bank.分行代碼;
-                item.帳戶名稱 = bank.帳戶名稱;
-                item.帳戶號碼 = bank.帳戶號碼;
-                db.SaveChanges();
-
+        public ActionResult Edit(int id, FormCollection form) {           
+            var item = repo.依銀行Id搜尋(id);
+            if (TryUpdateModel<客戶銀行資訊>(item,
+                new string[] { "客戶Id", "銀行名稱", "銀行代碼", "分行代碼", "帳戶名稱", "帳戶號碼", "是否已刪除" })) {
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
-            }
-            return View(bank);
+            }               
+            return View(item);
         }
 
         public ActionResult Details(int id)
         {
-            ViewData["CustomerId"] = mv.getCustomerId();
-            var item = db.客戶銀行資訊.Find(id);
+            ViewData["CustomerId"] = repo_customer.getCustomerId();
+            var item = repo.依銀行Id搜尋(id);
             return View(item);
         }
 
         public ActionResult Delete(int id)
         {
-            var bank = db.客戶銀行資訊.Find(id);
-
+            var bank = repo.依銀行Id搜尋(id);
             bank.是否已刪除 = true;
-            //db.客戶銀行資訊.Remove(bank);
-
+            
             try {
-                db.SaveChanges();
+                repo.UnitOfWork.Commit();
             }
             catch (DbEntityValidationException ex) {
                 throw ex;
             }
-
             return RedirectToAction("Index");
         }
     }

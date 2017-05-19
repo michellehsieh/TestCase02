@@ -10,19 +10,13 @@ namespace TestCase02.Controllers
 {
     public class CustomerController : Controller
     {
-        客戶資料Entities db = new 客戶資料Entities();
+        客戶資料Repository repo = RepositoryHelper.Get客戶資料Repository();
 
         // GET: Customer
         public ActionResult Index(string 搜尋條件 = "")
         {
-            var customer = db.客戶資料.AsQueryable();                       
-            var data = customer.Where(p => p.是否已刪除 == false);
-
-            if (搜尋條件 != "")
-            {
-                data = customer.Where(p => p.客戶名稱.Contains(搜尋條件));
-            }
-            return View(data.ToList());            
+            var customer = repo.依客戶名稱搜尋(搜尋條件);
+            return View(customer);            
         }
 
         public ActionResult Create()
@@ -34,53 +28,48 @@ namespace TestCase02.Controllers
         public ActionResult Create(客戶資料 customer)
         {
             if (ModelState.IsValid) {
-                db.客戶資料.Add(customer);
-                db.SaveChanges();
+                repo.Add(customer);
+                repo.UnitOfWork.Commit();
 
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(customer);
         }
 
         public ActionResult Edit(int id)
         {
-            var item = db.客戶資料.Find(id);
+            var item = repo.依客戶Id搜尋(id);
             return View(item);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, 客戶資料 customer)
-        {
-            if (ModelState.IsValid)
-            {
-                var item = db.客戶資料.Find(id);
-                item.客戶名稱 = customer.客戶名稱;
-                item.統一編號 = customer.統一編號;
-                item.電話 = customer.電話;
-                item.傳真 = customer.傳真;
-                item.地址 = customer.地址;
-                item.Email = customer.Email;
-                db.SaveChanges();
-                
+        public ActionResult Edit(int id, FormCollection form)
+        {            
+            var item = repo.依客戶Id搜尋(id);
+
+            if (TryUpdateModel<客戶資料>(item,
+                new string[] { "客戶名稱", "統一編號", "電話", "傳真", "地址", "Email", "是否已刪除" })) {
+                    
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
-             }
-             return View(customer);
+            }
+            return View(item);
         }
 
         public ActionResult Details(int id)
         {
-            var item = db.客戶資料.Find(id);
+            var item = repo.依客戶Id搜尋(id);
             return View(item);
         }
 
         public ActionResult Delete(int id)
         {
-            var customer = db.客戶資料.Find(id);
-
-            //db.客戶資料.Remove(customer);
+            var customer = repo.依客戶Id搜尋(id);
+                        
             customer.是否已刪除 = true;
+
             try {
-                db.SaveChanges();
+                repo.UnitOfWork.Commit();
             }
             catch (DbEntityValidationException ex) {
                 throw ex;

@@ -4,35 +4,29 @@ namespace TestCase02.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using TestCase02.Models.ModelViews;
     using ValidationAttributes;
 
     [MetadataType(typeof(客戶聯絡人MetaData))]
     public partial class 客戶聯絡人 : IValidatableObject
     {
-        客戶資料Entities db = new 客戶資料Entities();
+        客戶聯絡人Repository repo = new 客戶聯絡人Repository();
+        客戶資料Repository repo1 = new 客戶資料Repository();
+        
         public string 客戶名稱
         {
-            get {
-                
-                return db.客戶資料.Find(客戶Id).客戶名稱;
+            get {                
+                return repo1.依客戶Id搜尋(客戶Id).客戶名稱;
             }
         }
         
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
-                            
-            客戶資料MV mv = new 客戶資料MV();
-            var customer = db.客戶聯絡人.AsQueryable();
-            var customerId = mv.getCustomerByName(this.客戶名稱);
-            var data = customer
-                .Where(p => p.Id != this.Id && p.客戶Id == customerId && p.是否已刪除 == false && p.Email == this.Email);
-
-            if (data.ToList().Count > 1) {
+            var customerId = repo1.getCustomerByName(this.客戶名稱);
+            var item = repo.判斷email(this.Id, customerId, this.Email);           
+            
+            if (item.ToList().Count > 1) {
                 yield return new ValidationResult("該客戶已存在同一Email，請重新確認！", new string[] { "Email" });
-            }              
-             //結束
-             yield break;
-             //throw new NotImplementedException();
+            } 
+             yield break;             
          }
 
 }

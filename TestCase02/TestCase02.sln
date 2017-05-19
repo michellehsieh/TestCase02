@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2DA7055B-0416-4F8B-AC33-FD2CD797969E}"
 	ProjectSection(SolutionItems) = preProject
 		Week_01.txt = Week_01.txt
+		Week_02.txt = Week_02.txt
 	EndProjectSection
 EndProject
 Global

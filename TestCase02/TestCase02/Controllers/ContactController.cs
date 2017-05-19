@@ -4,43 +4,35 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TestCase02.Models;
-using TestCase02.Models.ModelViews;
 using System.Data.Entity.Validation;
 
 namespace TestCase02.Controllers
 {
     public class ContactController : Controller
     {
-        客戶資料Entities db = new 客戶資料Entities();
-        客戶資料MV mv = new 客戶資料MV();
-
+        客戶聯絡人Repository repo = new 客戶聯絡人Repository();
+        客戶資料Repository repo_customer = new 客戶資料Repository();
+        
         // GET: Contact
         public ActionResult Index(string 搜尋條件 = "")
         {
-            var contact = db.客戶聯絡人.AsQueryable();
-            var data = contact.Where(p => p.是否已刪除 == false);
-
-            if (搜尋條件 != "")
-            {
-                data = contact.Where(p => p.姓名.Contains(搜尋條件));
-            }
-            return View(data.ToList());
+            var item = repo.依姓名搜尋(搜尋條件);            
+            return View(item);
         }
 
         public ActionResult Create()
         {
-            ViewData["CustomerId"] = mv.getCustomerId();
+            ViewData["CustomerId"] = repo_customer.getCustomerId();
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(客戶聯絡人 contact)
-        {
-            ViewData["CustomerId"] = mv.getCustomerId();
-            if (ModelState.IsValid)
-            {
-                db.客戶聯絡人.Add(contact);
-                db.SaveChanges();
+        {            
+            ViewData["CustomerId"] = repo_customer.getCustomerId();
+            if (ModelState.IsValid) {
+                repo.Add(contact);
+                repo.UnitOfWork.Commit();
 
                 return RedirectToAction("Index");
             }
@@ -50,26 +42,20 @@ namespace TestCase02.Controllers
 
         public ActionResult Edit(int id)
         {
-            ViewData["CustomerId"] = mv.getCustomerId();
-            var item = db.客戶聯絡人.Find(id);
+            ViewData["CustomerId"] = repo_customer.getCustomerId();
+            var item = repo.依聯絡人Id搜尋(id);
             return View(item);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, 客戶聯絡人 contact)
+        public ActionResult Edit(int id, FormCollection form)
         {
-            ViewData["CustomerId"] = mv.getCustomerId();
-            if (ModelState.IsValid)
-            {
-                var item = db.客戶聯絡人.Find(id);
-                item.客戶Id = contact.客戶Id;
-                item.職稱 = contact.職稱;
-                item.姓名 = contact.姓名;
-                item.Email = contact.Email;
-                item.手機 = contact.手機;
-                item.電話 = contact.電話;
-                db.SaveChanges();
+            ViewData["CustomerId"] = repo_customer.getCustomerId();
+            var contact = repo.依聯絡人Id搜尋(id);
 
+            if (TryUpdateModel<客戶聯絡人>(contact,
+                new string[] { "客戶Id", "職稱", "姓名", "Email", "手機", "電話", "是否已刪除" })) {
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
             return View(contact);
@@ -77,19 +63,17 @@ namespace TestCase02.Controllers
 
         public ActionResult Details(int id)
         {
-            var item = db.客戶聯絡人.Find(id);
+            var item = repo.依聯絡人Id搜尋(id);
             return View(item);
         }
 
         public ActionResult Delete(int id)
         {
-            var contact = db.客戶聯絡人.Find(id);
-
+            var contact = repo.依聯絡人Id搜尋(id);
             contact.是否已刪除 = true;
-            //db.客戶聯絡人.Remove(contact);
-
+            
             try {
-                db.SaveChanges();
+                repo.UnitOfWork.Commit();
             }
             catch (DbEntityValidationException ex) {
                 throw ex;

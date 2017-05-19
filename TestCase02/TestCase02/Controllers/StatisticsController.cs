@@ -9,11 +9,11 @@ namespace TestCase02.Controllers
 {
     public class StatisticsController : Controller
     {
-        客戶資料Entities db = new 客戶資料Entities();
+        客戶資料統計表Repository repo = new 客戶資料統計表Repository();
+        
         // GET: Statistics
-        public ActionResult Index() {         
-
-            return View(db.客戶資料統計表.ToList());
+        public ActionResult Index() { 
+            return View(repo.All());
         }
     }
 }
