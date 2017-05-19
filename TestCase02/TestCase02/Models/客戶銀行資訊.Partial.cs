@@ -7,12 +7,13 @@ namespace TestCase02.Models
     [MetadataType(typeof(客戶銀行資訊MetaData))]
     public partial class 客戶銀行資訊
     {
+        客戶資料Repository repo = RepositoryHelper.Get客戶資料Repository();
+
         public string 客戶名稱
          {
              get
-             {
-                 客戶資料Entities db = new 客戶資料Entities();
-                 return db.客戶資料.Find(客戶Id).客戶名稱;
+             {              
+                 return repo.依客戶Id搜尋(客戶Id).客戶名稱;
              }
          }  
     }

@@ -10,8 +10,8 @@ namespace TestCase02.Controllers
 {
     public class ContactController : Controller
     {
-        客戶聯絡人Repository repo = new 客戶聯絡人Repository();
-        客戶資料Repository repo_customer = new 客戶資料Repository();
+        客戶聯絡人Repository repo = RepositoryHelper.Get客戶聯絡人Repository();
+        客戶資料Repository repo_customer = RepositoryHelper.Get客戶資料Repository();
         
         // GET: Contact
         public ActionResult Index(string 搜尋條件 = "")

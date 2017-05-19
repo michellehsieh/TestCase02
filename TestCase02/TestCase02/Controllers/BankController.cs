@@ -10,8 +10,8 @@ namespace TestCase02.Controllers
 {
     public class BankController : Controller
     {
-        客戶銀行資訊Repository repo = new 客戶銀行資訊Repository();
-        客戶資料Repository repo_customer = new 客戶資料Repository();
+        客戶銀行資訊Repository repo = RepositoryHelper.Get客戶銀行資訊Repository();
+        客戶資料Repository repo_customer = RepositoryHelper.Get客戶資料Repository();
 
         // GET: Bank
         public ActionResult Index(string 搜尋條件 = "")

@@ -9,7 +9,7 @@ namespace TestCase02.Controllers
 {
     public class StatisticsController : Controller
     {
-        客戶資料統計表Repository repo = new 客戶資料統計表Repository();
+        客戶資料統計表Repository repo = RepositoryHelper.Get客戶資料統計表Repository();
         
         // GET: Statistics
         public ActionResult Index() { 

@@ -9,9 +9,8 @@ namespace TestCase02.Models
     [MetadataType(typeof(客戶聯絡人MetaData))]
     public partial class 客戶聯絡人 : IValidatableObject
     {
-        客戶聯絡人Repository repo = new 客戶聯絡人Repository();
-        客戶資料Repository repo1 = new 客戶資料Repository();
-        
+        客戶聯絡人Repository repo = RepositoryHelper.Get客戶聯絡人Repository();
+        客戶資料Repository repo1 = RepositoryHelper.Get客戶資料Repository();
         public string 客戶名稱
         {
             get {                
